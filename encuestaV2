@@ -1,0 +1,68 @@
+import os
+
+class Colors:
+    RED = '\033[91m'
+    GREEN = '\033[92m'
+    YELLOW = '\033[93m'
+    BLUE = '\033[94m'
+    MAGENTA = '\033[95m'
+    CYAN = '\033[96m'
+    WHITE = '\033[97m'
+    RESET = '\033[0m'
+
+# Definimos la función para realizar la encuesta
+def realizar_encuesta(resultados_encuestas=None):
+    # Si no se proporciona un diccionario de resultados, lo inicializamos
+    if resultados_encuestas is None:
+        resultados_encuestas = {
+            'Pregunta 1': {'A': 0, 'B': 0, 'C': 0},
+            'Pregunta 2': {'A': 0, 'B': 0, 'C': 0},
+            'Pregunta 3': {'A': 0, 'B': 0, 'C': 0},
+            'Pregunta 4': {'A': 0, 'B': 0, 'C': 0},
+            'Pregunta 5': {'A': 0, 'B': 0, 'C': 0},
+            'Pregunta 6': {'A': 0, 'B': 0, 'C': 0},
+            'Pregunta 7': {'A': 0, 'B': 0, 'C': 0}
+        }
+
+    # Definimos las preguntas y opciones
+    preguntas = [
+        ('Pregunta 1', "¿Qué sentimientos experimenta cada mañana cuando suena el despertador?", [('A', 'Frustración'), ('B', 'Motivación'), ('C', 'Indiferencia')]),
+        ('Pregunta 2', "¿Qué sentimientos experimenta cuando vuelve del trabajo?", [('A', 'Alivio'), ('B', 'Cansancio'), ('C', 'Alegría')]),
+        ('Pregunta 3', "¿Qué lugar ocupa el trabajo en su vida?", [('A', 'Primordial'), ('B', 'Secundario'), ('C', 'No me queda otra')]),
+        ('Pregunta 4', "¿Se siente cómodo en el trabajo como en su casa?", [('A', 'Si'), ('B', 'No'), ('C', 'A veces')]),
+        ('Pregunta 5', "De niño y de joven ¿qué trabajo deseaba realizar?", [('A', 'Servicio'), ('B', 'Producción'), ('C', 'Deporte/Arte')]),
+        ('Pregunta 6', "¿Se concretó ese deseo?", [('A', 'Si'), ('B', 'No'), ('C', 'En proceso')]),
+        ('Pregunta 7', "¿Se dedica realmente a lo que le gusta?", [('A', 'Si'), ('B', 'No'), ('C', 'Estoy conforme')]),
+    ]
+
+    # Realizamos la encuesta
+    for pregunta_key, pregunta_texto, pregunta_choices in preguntas:
+        print(Colors.GREEN + pregunta_texto)
+        opciones_texto = (Colors.YELLOW + "\n ".join([f"{opcion}: {descripcion}" for opcion, descripcion in pregunta_choices]) + Colors.CYAN)
+        respuesta = input(Colors.CYAN + f"Ingrese su respuesta {opciones_texto}: ").upper()
+        while respuesta not in [opcion[0] for opcion in pregunta_choices]:
+            respuesta = input(Colors.RED + "Respuesta no válida. Por favor, ingrese una opción válida: " + Colors.RESET).upper()
+        resultados_encuestas[pregunta_key][respuesta] += 1
+        os.system('printf "\033[J"')
+        os.system('clear')
+
+    # Mostramos los resultados de la encuesta
+    print(Colors.RESET + "\nResultados de la encuesta:")
+    for pregunta, valores in resultados_encuestas.items():
+        print(Colors.BLUE + f"{pregunta}:")
+        for opcion, cantidad in valores.items():
+            print(Colors.RESET + f"Opción {opcion}: {cantidad} respuestas")
+
+    # Preguntamos al usuario si desea realizar otra encuesta
+    otra_encuesta = input("¿Desea realizar otra encuesta? (S/N): ").upper()
+    if otra_encuesta == 'S':
+        os.system('printf "\033[J"')
+        os.system('clear')
+        # Concatenamos los resultados de la encuesta actual con los resultados anteriores
+        realizar_encuesta(resultados_encuestas)
+    else:
+        print("¡Hasta luego!")
+
+# Ejecutamos la función para realizar la encuesta
+if __name__ == "__main__":
+    realizar_encuesta()
