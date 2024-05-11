@@ -1,5 +1,5 @@
 El código está diseñado en Python para correr en celulares sin la 
-necesidad de librerias externas.
+necesidad de librerias externas con la intención de facilitar su uso.
 
 Para ejecutarlo desde el celular es necesario instalar algún intérprete 
 de Python (lenguaje en el que está programado) como Pydroid 3 o similares.
